@@ -1,62 +1,135 @@
 'use strict';
- let error404={
-    "status": 404,
-    "responseText": "Sorry, page not found "
-    };
-const express = require('express');
-const cors = require('cors');
-const movieData = require('./Movie Data/data.json');
 
-const server = express();
+
+
+require('dotenv').config();
+const express=require('express');
+const cors = require('cors');
+const dataMovie =require('./movie Data/data.json');
+const axios = require('axios');
+
+const PORT = process.env.PORT;
+
+const server=express();
 server.use(cors());
 
-server.get('/',handelHome);
-server.get('/favorite',handelFavorite);
+
+server.get('/', handelData);
+server.get('/favorite',handelfavorite);
+server.get('/trending',handeltrending);
+server.get('/search',handelsearch);
 server.get('*',handelNotFound);
-server.use(errorHandler);
+server.use(handelservererror);
 
 
+let url =`https://api.themoviedb.org/3/trending/all/week?api_key=${process.env.APIKEY}&language=en-US`;
+let number=2;
+let userSearch = "Dune";
+let userSearch2 = "Sing 2";
 
-function Movie(title,poster_path,overview){
-    this.title=title;
-    this.poster_path=poster_path;
-    this.overview=overview;
-   
- }
 
-function handelHome(req,res){
-    let movie = [];
-    // movieData.forEach(val=>{
-        let obj ;
-    //     movie.push(obj);
-    // }) its temp  cause i dont wanna show format like array 
-    // for (var key of Object.keys(movieData)) {
-        obj = new Movie(movieData.title, movieData.poster_path, movieData.overview);
-        // movie.push(obj)
-    
-    
-    
+function handelservererror (error,req , res){
 
-    return res.status(200).json(obj);
-    
+   const err ={
+       status : 500,
+       message : error
+   }
+
+     res.status(500).send(err);
+
 }
-function handelNotFound(req,res){
-    res.status(404).json(error404)
- }
-function handelFavorite(req,res){
-    return res.status(200).send("Welcome to Favorite Page");
-}
-function errorHandler (error,req,res){
-    const err ={
-        status : 500,
-        message : error
 
+function Movei (id , title , release_date , poster_path , overview){
+    this.id = id;    
+    this.title = title;
+    this.release_date = release_date;
+    this.poster_path = poster_path;
+    this.overview = overview;
     }
-    res.status(500).send(err);
+   
+   
+   
+function handelsearch(req , res){
+    // let newArr = [];
+    let url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.APIKEY}&language=en-US&query=the+${userSearch}`;
+
+    axios.get(url)
+    .then(results=>{
+        let movies = results.data.results.map(val =>{
+            return new Movei(val.id, val.title, val.release_date, val.poster_path, val.overview);
+        });
+        res.status(200).json(movies);  
+     }).catch(err=>{
+
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+    
+
+function handeltrending(req , res){
+
+    let newArr = [];
+    axios.get(url)
+     .then((results)=>{
+      
+        results.data.results.forEach(val =>{
+                 newArr.push(new Movei(val.id, val.title, val.release_date, val.poster_path, val.overview));
+        
+        });
+        
+      
+         res.status(200).json(newArr);
+
+    }).catch((err)=>{
+
+    })
+}
+ 
+
+
+
+
+
+function handelNotFound(req , res){
+    res.status(404).send('This page does not exist :/ ');
 }
 
 
-// i have aproblem on port 3000
-server.listen(5050, ()=>{
-    console.log("listinig to port 5050");
+
+
+function handelData(req,res){
+    // let movie=[];
+    let obj;
+    obj= new Movei(dataMovie.title, dataMovie.poster_path, dataMovie.overview);
+    return res.status(200).json(obj);
+
+    
+}
+
+function handelfavorite(req,res){
+    res.status(200).send("Welcome to Favorite Page :) ");
+}
+
+
+
+
+
+server.listen(PORT,()=>{
+    console.log("my server is listining to port 5050");
 })
