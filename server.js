@@ -60,7 +60,7 @@ function handelsearch(req , res){
         });
         res.status(200).json(movies);  
      }).catch(err=>{
-
+        handelservererror(err,req,res);
     })
 
 
@@ -97,7 +97,8 @@ function handeltrending(req , res){
          res.status(200).json(newArr);
 
     }).catch((err)=>{
-
+        handelservererror(err,req,res);
+          
     })
 }
  
