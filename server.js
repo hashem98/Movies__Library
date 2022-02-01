@@ -18,6 +18,9 @@ server.get('/', handelData);
 server.get('/favorite',handelfavorite);
 server.get('/trending',handeltrending);
 server.get('/search',handelsearch);
+server.get('/horror',handelsearchHorror);
+server.get('/comedy',handelsearchComedy);
+
 server.get('*',handelNotFound);
 server.use(handelservererror);
 
@@ -51,7 +54,7 @@ function Movei (id , title , release_date , poster_path , overview){
    
 function handelsearch(req , res){
     // let newArr = [];
-    let url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.APIKEY}&language=en-US&query=the+${userSearch}`;
+    let url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.APIKEY}&language=en-US&query=${userSearch}`;
 
     axios.get(url)
     .then(results=>{
@@ -64,22 +67,35 @@ function handelsearch(req , res){
     })
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
 
+    function handelsearchHorror(req,res){
+        //since, 27 is the genre id for Horror
+     let url1 =`http://api.themoviedb.org/3/discover/movie?api_key=${process.env.APIKEY}&with_genres=27`
+     axios.get(url1)
+    .then(results=>{
+        let movies = results.data.results.map(val =>{
+            return new Movei(val.id, val.title, val.release_date, val.poster_path, val.overview);
+        });
+        res.status(200).json(movies);  
+     }).catch(err=>{
+        handelservererror(err,req,res);
+    })
+    }
+    
+    function handelsearchComedy(req,res){
+        //since, 27 is the genre id for Horror
+     let url2 =`http://api.themoviedb.org/3/discover/movie?api_key=${process.env.APIKEY}&with_genres=35`
+     axios.get(url2)
+    .then(results=>{
+        let movies = results.data.results.map(val =>{
+            return new Movei(val.id, val.title, val.release_date, val.poster_path, val.overview);
+        });
+        res.status(200).json(movies);  
+     }).catch(err=>{
+        handelservererror(err,req,res);
+    })
+    }
     
 
 function handeltrending(req , res){
