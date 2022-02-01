@@ -7,19 +7,23 @@ const express=require('express');
 const cors = require('cors');
 const dataMovie =require('./movie Data/data.json');
 const axios = require('axios');
-
+const pg = require('pg');
 const PORT = process.env.PORT;
+const client = new pg.Client(process.env.DATABASE_URL);
 
 const server=express();
 server.use(cors());
-
-
+server.use(express.json());
 server.get('/', handelData);
 server.get('/favorite',handelfavorite);
 server.get('/trending',handeltrending);
 server.get('/search',handelsearch);
+
 server.get('/horror',handelsearchHorror);
 server.get('/comedy',handelsearchComedy);
+
+server.post('/addMovie',addMovie);
+server.get('/getMovies',getMovie);
 
 server.get('*',handelNotFound);
 server.use(handelservererror);
@@ -27,7 +31,7 @@ server.use(handelservererror);
 
 let url =`https://api.themoviedb.org/3/trending/all/week?api_key=${process.env.APIKEY}&language=en-US`;
 let number=2;
-let userSearch = "Dune";
+// let userSearch = "Dune";
 let userSearch2 = "Sing 2";
 
 
@@ -53,6 +57,7 @@ function Movei (id , title , release_date , poster_path , overview){
    
    
 function handelsearch(req , res){
+    let userSearch = req.query.userSearch;
     // let newArr = [];
     let url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.APIKEY}&language=en-US&query=${userSearch}`;
 
@@ -96,7 +101,24 @@ function handelsearch(req , res){
         handelservererror(err,req,res);
     })
     }
-    
+    function addMovie (req,res){
+        const movie = req.body;
+        let sql = `INSERT INTO movie(title,release_date,poster_path,overview) VALUES ($1,$2,$3,$4) RETURNING *;`
+        let values=[movie.title,movie.release_date,movie.poster_path,movie.overview];
+        client.query(sql,values).then(data =>{
+            res.status(200).json(data.rows);
+        }).catch(error=>{
+            handelservererror(error,req,res)
+        });
+    }
+    function getMovie(req,res){
+        let sql = `SELECT * FROM movie;`;
+        client.query(sql).then(data=>{
+           res.status(200).json(data.rows);
+        }).catch(error=>{
+            handelservererror(error,req,res)
+        });
+    }
 
 function handeltrending(req , res){
 
@@ -146,7 +168,10 @@ function handelfavorite(req,res){
 
 
 
-
-server.listen(PORT,()=>{
-    console.log("my server is listining to port 5050");
-})
+client.connect().then(()=>{
+    server.listen(PORT,()=>{
+        console.log("my server is listining to port 5050");
+    })
+}).catch(error=>{
+    handelservererror(error,req,res)
+});
