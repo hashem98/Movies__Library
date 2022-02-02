@@ -8,6 +8,8 @@
 ![WRRC2](/wrrcapi.png)
 # WRRC3
 ![WRRC3](/wrrcsql.png)
+# WRRC4
+![WRRC3](/CRUDwrrc.png)
 
 ## Overview
 this is a web site to bring a data from API and show it  
@@ -21,6 +23,9 @@ this is a web site to bring a data from API and show it
 * connect data base with server using command  "psql -d movie -f schema.sql"
 * send your (post url ) on postman programm
 * start server command "npm start"
+* /UPDATE/id  to update  a specific movie in the database.
+* /DELETE/id  to remove a specific movie from the database.
+* getMovie/id:  to get a specific movie from the database
 * # I've put APIKEY and PORT in .env file 
 
 ## Project Features
@@ -28,3 +33,6 @@ this is a web site to bring a data from API and show it
 - add favorite movie to a list 
 - add a movies to data base 
 - get a movies to data base 
+- update a movie from database
+- delet a movie from database
+- bring a specific movie from database
