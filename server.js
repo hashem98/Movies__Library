@@ -5,7 +5,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const dataMovie = require('movieData/data.json');
+// const dataMovie = require('movieData/data.json');
 const axios = require('axios');
 const pg = require('pg');
 const PORT = process.env.PORT;
@@ -186,14 +186,14 @@ function oneMovieHandler (req,res){
 }
 
 
-function handelData(req, res) {
-    // let movie=[];
-    let obj;
-    obj = new Movei(dataMovie.title, dataMovie.poster_path, dataMovie.overview);
-    return res.status(200).json(obj);
+// function handelData(req, res) {
+//     // let movie=[];
+//     let obj;
+//     obj = new Movei(dataMovie.title, dataMovie.poster_path, dataMovie.overview);
+//     return res.status(200).json(obj);
 
 
-}
+// }
 
 function handelfavorite(req, res) {
     res.status(200).send("Welcome to Favorite Page :) ");
