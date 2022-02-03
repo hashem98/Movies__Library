@@ -8,6 +8,7 @@ const cors = require('cors');
 // const dataMovie = require('movieData/data.json');
 const axios = require('axios');
 const pg = require('pg');
+const req = require('express/lib/request');
 const PORT = process.env.PORT;
 const client = new pg.Client(process.env.DATABASE_URL);
 
@@ -72,7 +73,8 @@ function handelsearch(req, res) {
             });
             res.status(200).json(movies);
         }).catch(err => {
-            handelservererror(err, req, res);
+            console.log(error.message);
+    // handelservererror(error, req, res)
         })
 
 
@@ -88,7 +90,8 @@ function handelsearchHorror(req, res) {
             });
             res.status(200).json(movies);
         }).catch(err => {
-            handelservererror(err, req, res);
+            console.log(error.message);
+    // handelservererror(error, req, res)
         })
 }
 
@@ -102,7 +105,8 @@ function handelsearchComedy(req, res) {
             });
             res.status(200).json(movies);
         }).catch(err => {
-            handelservererror(err, req, res);
+            console.log(error.message);
+    // handelservererror(error, req, res)
         })
 }
 function addMovie(req, res) {
@@ -112,7 +116,8 @@ function addMovie(req, res) {
     client.query(sql, values).then(data => {
         res.status(200).json(data.rows);
     }).catch(error => {
-        handelservererror(error, req, res)
+        console.log(error.message);
+    // handelservererror(error, req, res)
     });
 }
 function getMovie(req, res) {
@@ -120,7 +125,8 @@ function getMovie(req, res) {
     client.query(sql).then(data => {
         res.status(200).json(data.rows);
     }).catch(error => {
-        handelservererror(error, req, res)
+        console.log(error.message);
+        // handelservererror(error, req, res)
     });
 }
 
@@ -139,7 +145,8 @@ function handeltrending(req, res) {
             res.status(200).json(newArr);
 
         }).catch((err) => {
-            handelservererror(err, req, res);
+            console.log(error.message);
+    // handelservererror(error, req, res)
 
         })
 }
@@ -207,5 +214,6 @@ client.connect().then(() => {
         console.log("my server is listining to port 5050");
     })
 }).catch(error => {
-    handelservererror(error, req, res)
+    console.log(error.message);
+    // handelservererror(error, req, res)
 });
