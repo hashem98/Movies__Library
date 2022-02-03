@@ -14,7 +14,7 @@ const client = new pg.Client(process.env.DATABASE_URL);
 const server = express();
 server.use(cors());
 server.use(express.json());
-server.get('/', handelData);
+// server.get('/', handelData);
 server.get('/favorite', handelfavorite);
 server.get('/trending', handeltrending);
 server.get('/search', handelsearch);
