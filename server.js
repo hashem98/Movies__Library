@@ -40,16 +40,16 @@ let number = 2;
 let userSearch2 = "Sing 2";
 
 
-function handelservererror(error, req, res) {
+// function handelservererror(error, req, res) {
 
-    const err = {
-        status: 500,
-        message: error
-    }
+//     const err = {
+//         status: 500,
+//         message: error
+//     }
 
-    res.status(500).send(err);
+//     res.status(500).send(err);
 
-}
+// }
 
 function Movei(id, title, release_date, poster_path, overview) {
     this.id = id;
