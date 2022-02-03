@@ -36,3 +36,15 @@ this is a web site to bring a data from API and show it
 - update a movie from database
 - delet a movie from database
 - bring a specific movie from database
+
+routs
+* /favorite
+* /trending
+* /search
+* /horror
+* /comedy
+* /addMovie
+* /getMovies
+* /UPDATE/:id
+* /DELETE/:id
+* /getMovie/:id
