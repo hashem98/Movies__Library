@@ -5,7 +5,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const dataMovie = require('./movie Data/data.json');
+const dataMovie = require('./movieData/data.json');
 const axios = require('axios');
 const pg = require('pg');
 const PORT = process.env.PORT;
