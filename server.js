@@ -31,7 +31,7 @@ server.delete('/DELETE/:id', deleteMovieHandler);
 server.get('/getMovie/:id',oneMovieHandler);
 
 server.get('*', handelNotFound);
-server.use(handelservererror);
+// server.use(handelservererror);
 
 
 let url = `https://api.themoviedb.org/3/trending/all/week?api_key=${process.env.APIKEY}&language=en-US`;
